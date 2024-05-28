@@ -2,6 +2,8 @@
 
 This project is a simple online booking system consisting of three (only two are used) API routines. The first one retrieves available slots for a selected date, and the second one books an appointment. The redundant routine lists all appointments but wasn't needed.
 
+NOTE: Security was very much omitted for this task. API keys are visible, some data is insecure, and there are no checks for SQL injection. This was done to save time and focus on the core functionality of the project. In a real-world scenario, these would be implemented.
+
 ## Project Design
 
 The project is designed with backend in focus, and should be implementable with any full-stack site that uses PHP. The frontend is a hacky blade engine that was created to replicate MVC architecture (displaying views, handling requests, and routing). The databse is very basic with only one table for appointments* but follows a normalized structure.
