@@ -24,14 +24,7 @@ The project uses modern AJAX for data exchange, with HTTP as the transport proto
 ## API Endpoints
 
 - `GET /api/available-times`: Retrieves all booked slots. Returns a JSON object with a record containing time and date (no other information is technically required at this point, but could be easily added it needed.)
-- `POST /api/create-appointment`: Books an appointment. The request body should be a JSON object with the following properties:
-  - `firstName`
-  - `lastName`
-  - `phoneNumber`
-  - `emailAddress`
-  - `date`
-  - `time`
-
+- `POST /api/create-appointment`: Books an appointment, requires all form fields in order to be processed.
 ## Testing
 
 Testing was not a requirement, and due to my lack of experience with PHP testing, I didn't have time to implement it.
