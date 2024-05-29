@@ -1,24 +1,26 @@
 # Online Booking System
 
-This project is a simple online booking system consisting of three (only two are used) API routines. The first one retrieves available slots for a selected date, and the second one books an appointment. The redundant routine lists all appointments but wasn't needed.
-
-NOTE: Security was very much omitted for this task. API keys are visible, some data is insecure, and there are no checks for SQL injection. This was done to save time and focus on the core functionality of the project. In a real-world scenario, these would be implemented.
+This repository is a simple public online booking system. It consists of a simple API with 2 routes (retrieve available appointments and booking an appointment). 
 
 ## Project Design
 
-The project is designed with backend in focus, and should be implementable with any full-stack site that uses PHP. The frontend is a hacky blade engine that was created to replicate MVC architecture (displaying views, handling requests, and routing). The databse is very basic with only one table for appointments* but follows a normalized structure.
+As it wasn't specified whether the system would require a login to book a meeting, I opted in for a simple and flexible approach that allows for public booking, but a user schema could be easily implemented if needed.
 
-Appointments are selectable per day, with each slot lasting 30 minutes. Slots can be booked between 8am and 5pm. The system includes a number of frontend and backend checks to ensure data integrity and consistency. Meetings can be booked up to 2 months in advance, with one booking per day (again, probably shouldn't let users book another one prior to their next one, but I realised that way too late). Bookings cannot be made retroactively or on weekends.
+All data is stored within a MySQL database and the frontend is a simple blade replica that mirrors the MVC architecture. This was done so virtually any front-end can be adopted, including raw HTML. 
 
-Note:* The appointments table was built under the assumption it wouldn't be logged users but rather a public booking system. In hindsight, it would be better to have a user table and link the appointments to the user but due to time constraints I decided to stick with the initial decision. This could be easily amended by creating a user schema and linking the appointments to the user instead of email and phone.
+Security was very much omitted for this task. API keys are visible from the frontend, once again for flexibility reasons. In production a node server with a frontend framework, or a Laravel backend could provide security and a more robust system. 
+
+Appointments are selectable per day, with each slot lasting 30 minutes. Slots can be booked between 8am and 5pm. The system includes a both a frontend and backend validation to ensure data integrity and consistency. Meetings can be booked up to 2 months in advance, with one booking per day. Bookings cannot be made retroactively or on weekends.
+
+Note:* A further improvement can be made to allow only one booking per user UNTIL that meeting passes. But this would depend on client requirements.
 
 ## Requirements
 
-The project uses modern AJAX for data exchange, with HTTP as the transport protocol and JSON as the data type. The database is MySQL compatible. The code is written in vanilla PHP, and it's compatible with PHP version 8.2+ and MySQL 8+.
+The project uses AJAX for data exchange, with HTTP as the transport protocol and JSON as the data type. The database is MySQL compatible. The code is written in vanilla PHP, and it's compatible with PHP version 8.2+ and MySQL 8+.
 
 ## Setup
 
-1. Clone the repository
+1. Clone the repository or extract the archive
 2. Run `composer install` to install the dependencies
 3. Copy `.env.example` to `.env` and fill in your database credentials
 4. Run the SQL commands in the provided `.sql` file to set up the database
@@ -29,12 +31,12 @@ The project uses modern AJAX for data exchange, with HTTP as the transport proto
 - `POST /api/create-appointment`: Books an appointment, requires all form fields in order to be processed.
 ## Testing
 
-Testing was not a requirement, and due to my lack of experience with PHP testing, I didn't have time to implement it.
+Only basic QA using Postman was done to ensure the API was working as expected. Further testing could be done using PHPUnit or another testing framework to ensure the system is robust and reliable.
 
 ## Future Improvements
 
-- Create user schema
-- Middleware to check if user is logged in
+- Create user schema (depending on client requirements)
+- Middleware to check if user is logged in*
 - Middleware to check if the API key is valid
 - (Dev only) "pose as" feature allowing to test multiple users while booking
 - (Dev only) "reset" feature to clear the appointments table
@@ -51,16 +53,13 @@ FastRoutes - A simple and fast routing package, to add new routes simply add rou
 For example: $r->addRoute('GET', '/about', [AboutController::class, 'show']); 
 Then create relevant controller and view files.
 
-DotEnv: A simple package to handle environment variables. To add new environment variables, add them to the .env file and access them using $_ENV('VARIABLE_NAME').
-
-DIY Blade: A very hacky and simple implementation of blade to handle views, with a few directives that never ended up being used (like @if, @foreach, etc). All views are located in public/views directory.
-
+DotEnv: A simple package to handle serverside environment variables. To add new environment variables, add them to the .env file and access them using $_ENV('VARIABLE_NAME').
 ### Methods
 
 #### Helpers.php
 
 Helpers::View($view, $data = []) - Renders a view with data, usage identical to Laravel's view() method.
-Helpers::response->json() - Returns a JSON response with the provided data, saves a bit of realestate when returning data.
+Helpers::response->json() - Returns a JSON response with the provided data.
 
 #### Database.php
 
